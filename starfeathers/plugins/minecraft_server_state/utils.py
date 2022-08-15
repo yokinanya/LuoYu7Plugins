@@ -32,14 +32,14 @@ def mcstate(address: str):
     server = JavaServer.lookup(address)
     info = f"IP/域名：{address}\n"
     try:
-        status = server.status()
-        info = info + f"兼容游戏版本：{status.version.name}\n可容纳最大玩家数:{status.players.max}\n在线玩家数：{status.players.online}"
+        query = server.query()
+        hostip = query.raw["hostip"]
+        hostport = query.raw["hostport"]
+        info = info + f"主机IP：{hostip}\n端口：{hostport}\nMOTD：{query.motd}\n兼容游戏版本：{query.software.version}\n服务器使用的软件或核心：{query.software.brand}\n可容纳最大玩家数:{query.players.max}\n在线玩家数：{query.players.online}"
     except:
         try:
-            query = server.query()
-            hostip = query.raw["hostip"]
-            hostport = query.raw["hostport"]
-            info = info + f"主机IP：{hostip}\n端口：{hostport}\nMOTD：{query.motd}\n兼容游戏版本：{query.software.version}\n服务器使用的软件或核心：{query.software.brand}\n可容纳最大玩家数:{query.players.max}\n在线玩家数：{query.players.online}"
+            status = server.status()
+            info = info + f"兼容游戏版本：{status.version.name}\n可容纳最大玩家数:{status.players.max}\n在线玩家数：{status.players.online}"
         except:
             info = "服务器状态：离线"
     try:
