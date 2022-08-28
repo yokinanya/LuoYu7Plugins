@@ -15,8 +15,9 @@ apexApi = Config.parse_obj(get_driver().config).apex_api_token
 
 
 inquire = on_command("inquire", aliases={"查询"}, priority=50, block=True)
+connect = on_command("connect", aliases={"绑定"}, priority=50, block=True)
 crafting = on_command("craft", aliases={"复制器"}, priority=50, block=True)
-help = on_command("apexhelp", aliases={"apex帮助","Apex帮助"}, priority=50, block=True)
+help = on_command("apexhelp", aliases={"apex帮助", "Apex帮助"}, priority=50, block=True)
 map = on_command("map", aliases={"地图"}, priority=50, block=True)
 
 
@@ -32,7 +33,9 @@ def lang(langode: str):
         lang.close()
         return maps, crafts, raritys, rank, legends
 
+
 maps, crafts, raritys, rank, legends = lang("zh_cn")
+
 
 def read_userdata(qqid: int):
     userdata = os.path.abspath(os.path.join(os.path.dirname(__file__), r"userdata.json"))
@@ -43,6 +46,7 @@ def read_userdata(qqid: int):
         userdata.close()
     return username, platform
 
+
 def read_data():
     userdata = os.path.abspath(os.path.join(os.path.dirname(__file__), r"userdata.json"))
     with open(userdata, "r", encoding="utf-8") as userdata:
@@ -50,17 +54,19 @@ def read_data():
         userdata.close()
     return userdatas
 
+
 def write_userdata(userdatas: dict):
     userdata = os.path.abspath(os.path.join(os.path.dirname(__file__), r"userdata.json"))
     with open(userdata, "w", encoding="utf-8") as userdata:
         json.dump(userdatas, userdata)
         userdata.close()
 
+
 def get_state(jsonobj):
-    pstate = jsonobj["realtime"] # 状态jsonobj
-    online = pstate["isOnline"] # 在线状态
-    inGame = pstate["isInGame"] # 游戏状态
-    selectedLegend = pstate["selectedLegend"] # 当前所选传奇
+    pstate = jsonobj["realtime"]  # 状态jsonobj
+    online = pstate["isOnline"]  # 在线状态
+    inGame = pstate["isInGame"]  # 游戏状态
+    selectedLegend = pstate["selectedLegend"]  # 当前所选传奇
     if selectedLegend in legends.keys():
         selectedLegend = legends[selectedLegend]
     if online == 1:
@@ -70,7 +76,8 @@ def get_state(jsonobj):
             state = "在线中"
     else:
         state = "离线中"
-    return state , selectedLegend
+    return state, selectedLegend
+
 
 def stat(sname: str, platform: str):
     URL = f"https://api.mozambiquehe.re/bridge?auth={apexApi}&player={sname}&platform={platform}"
@@ -80,8 +87,8 @@ def stat(sname: str, platform: str):
         level = jsonobj["global"]["level"]  # 等级
         rankscore = jsonobj["global"]["rank"]["rankScore"]  # 排名分
         rankname = jsonobj["global"]["rank"]["rankName"]  # 段位
-        predatorrank = jsonobj["global"]["rank"]["ladderPosPlatform"] #猎杀排名
-        state, selectedLegend = get_state(jsonobj) #当前状态
+        predatorrank = jsonobj["global"]["rank"]["ladderPosPlatform"]  # 猎杀排名
+        state, selectedLegend = get_state(jsonobj)  # 当前状态
         if name == "":
             name = sname
         if rankname in rank.keys():
@@ -92,6 +99,7 @@ def stat(sname: str, platform: str):
     except Exception:
         msg = "查询失败，请检查用户名是否正确然后重试，steam平台请输入orginid"
     return msg
+
 
 @inquire.handle()
 async def handle_first_receive(state: T_State, event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
@@ -106,16 +114,47 @@ async def handle_first_receive(state: T_State, event: MessageEvent, matcher: Mat
     if plain_text:
         state.update({'Name': plain_text})
 
+
 @inquire.got("Name", prompt="你想查询谁的战绩呢?")
 async def handle_city(event: MessageEvent, uname: str = ArgStr('Name')):
     qqid = event.user_id
     userdatas = read_data()
     userdatas[str(qqid)] = {"username": uname, "platform": "PC"}
-    msg = stat(sname = uname, platform = "PC")
+    msg = stat(sname=uname, platform="PC")
+    await inquire.finish(msg, at_sender=True)
+
+
+@connect.handle()
+async def handle_first_connect(state: T_State, event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+    plain_text = args.extract_plain_text().strip()
+    qqid = event.user_id
+    if plain_text:
+        state.update({'uName': plain_text})
+        state.update({'uPlatform': "PC"})
+
+
+@connect.got("uName", prompt="你想查询谁的战绩呢?")
+@connect.got("uPlatform", prompt="你想查询的是哪个平台的呢？\n【PC\PS\Xbox】")
+async def handle_city(event: MessageEvent, uname: str = ArgStr('uName'), uplatform: str = ArgStr('uPlatform')):
+    win_platform = ["PC", "Origin", "Steam"]
+    ps_platform = ["PS4", "PS5", "PS", "Playstation"]
+    if uplatform in win_platform:
+        uplatform = "PC"
+    elif uplatform in ps_platform:
+        uplatform = "PS4"
+    elif uplatform == "Xbox":
+        uplatform = "Xbox"
+    else:
+        connect.reject_arg(key="uPlatform", prompt="你输入的平台不对哦~请注意大小写~\n\n【PC\PS\Xbox】")
+    qqid = event.user_id
+    userdatas = read_data()
+    userdatas[str(qqid)] = {"username": uname, "platform": uplatform}
+    msg = stat(sname=uname, platform=uplatform)
     if "查询失败" in msg:
         pass
     else:
         write_userdata(userdatas)
+        msg = "绑定成功\n" + msg
     await inquire.finish(msg, at_sender=True)
 
 

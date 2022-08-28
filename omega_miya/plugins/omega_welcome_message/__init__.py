@@ -2,10 +2,10 @@
 @Author         : Ailitonia
 @Date           : 2021/08/14 19:09
 @FileName       : omega_welcome_message.py
-@Project        : nonebot2_miya 
+@Project        : nonebot2_miya
 @Description    : 群自定义欢迎消息
 @GitHub         : https://github.com/Ailitonia
-@Software       : PyCharm 
+@Software       : PyCharm
 """
 
 from nonebot import logger

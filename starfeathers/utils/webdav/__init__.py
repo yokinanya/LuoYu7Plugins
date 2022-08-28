@@ -16,7 +16,8 @@ def ls_folder(t2path: str, detail: bool = False):
     client.ls(path=f'/Nonebot/{t2path}', detail=detail)
 
 
-def upload_file(path: str, t2path: str, filename: str):
+def upload_file(path, t2path: str, filename: str):
+    ls_folder(t2path)
     client.upload_file(from_path=path, to_path=f'/Nonebot/{t2path}/{filename}', overwrite=True)
 
 

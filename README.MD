@@ -4,6 +4,7 @@
 - Apex信息查询
 - Minecraft服务器信息查询
 - 简易群管
+- 缓存及日志管理（不支持Windows系统）
 
 **[OmegaMiya](https://github.com/Ailitonia/omega-miya)插件**
 - 关键词回复

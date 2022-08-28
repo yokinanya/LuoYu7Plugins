@@ -16,6 +16,7 @@ def get_folder_info(folder: str):
     subinfo = os.popen(subinfo_cmd).read()
     return subinfo
 
+
 def get_path(folder: str):
     path = pathlib.Path(os.path.abspath(sys.path[0])).joinpath(folder)
     if not path.exists():
