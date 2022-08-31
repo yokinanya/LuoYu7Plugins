@@ -337,15 +337,18 @@ def draw_one_operator(user_id: int) -> str:
     else:
         # 对应星级无up活动
         acquire_operator = random.sample([x.name for x in ALL_OPERATOR if (x.star == star and not any([x.limited, x.event_only, x.recruit_only, x.special_only]))], k=1)[0]
-
-    return f"【{star}★】{acquire_operator}"
+    if star == 6 or star == 5:
+        star_sign = "★"
+    else:
+        star_sign = "☆"
+    return f"【{star}{star_sign}】{acquire_operator}"
 
 
 def draw_one_arknights_2(user_id: int) -> str:
     # 获得当期up干员
     up_operators = []
     for item in [x.operator for x in UP_OPERATOR]:
-        up_operators.extend([f"【{x.star}★】{x.name}" for x in item])
+        up_operators.extend([f"【{x.star}☆】{x.name}" for x in item])
     up_up_operator = "\n".join(up_operators)
     up_info = f"当期UP干员:\n{up_up_operator}"
 
@@ -358,7 +361,7 @@ def draw_ten_arknights_2(user_id: int) -> str:
     # 获得当期up干员
     up_operators = []
     for item in [x.operator for x in UP_OPERATOR]:
-        up_operators.extend([f"【{x.star}★】{x.name}" for x in item])
+        up_operators.extend([f"【{x.star}☆】{x.name}" for x in item])
     up_up_operator = "\n".join(up_operators)
     up_info = f"当期UP干员:\n{up_up_operator}"
 

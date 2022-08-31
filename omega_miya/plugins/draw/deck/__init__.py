@@ -8,10 +8,10 @@ from .arknights_2 import draw_one_arknights_2, draw_ten_arknights_2
 T_DrawDeck = Callable[[int], str | Message | MessageSegment]
 """抽卡函数"""
 _DECK: dict[str, T_DrawDeck] = {
-    # '明日方舟轮换池单抽': draw_one_arknights,
-    # '明日方舟轮换池十连': draw_ten_arknights,
-    '明日方舟单抽': draw_one_arknights_2,
-    '明日方舟十连': draw_ten_arknights_2,
+    '明日方舟单抽': draw_one_arknights,
+    '明日方舟十连': draw_ten_arknights,
+    '明日方舟限定池单抽': draw_one_arknights_2,
+    '明日方舟限定池十连': draw_ten_arknights_2,
 }
 """可用的抽卡函数"""
 

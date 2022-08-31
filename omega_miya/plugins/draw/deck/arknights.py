@@ -29,17 +29,17 @@ UP_OPERATOR: List[UpEvent] = [
     UpEvent(
         star=6,
         operator=[
-            Operator(name="塞雷娅/Saria", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="煌/Blaze", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="早露/Роса", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="斯卡蒂/Skadi", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
     UpEvent(
         star=5,
         operator=[
-            Operator(name="白金/Platinum", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="燧石/Flint", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="夜魔/Nightmare", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="洛洛/Rockrock", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="幽灵鲨/Specter", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="绮良/Kirara", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
@@ -338,15 +338,18 @@ def draw_one_operator(user_id: int) -> str:
     else:
         # 对应星级无up活动
         acquire_operator = random.sample([x.name for x in ALL_OPERATOR if (x.star == star and not any([x.limited, x.event_only, x.recruit_only, x.special_only]))], k=1)[0]
-
-    return f"【{star}★】{acquire_operator}"
+    if star == 6 or star == 5:
+        star_sign = "★"
+    else:
+        star_sign = "☆"
+    return f"【{star}{star_sign}】{acquire_operator}"
 
 
 def draw_one_arknights(user_id: int) -> str:
     # 获得当期up干员
     up_operators = []
     for item in [x.operator for x in UP_OPERATOR]:
-        up_operators.extend([f"【{x.star}★】{x.name}" for x in item])
+        up_operators.extend([f"【{x.star}☆】{x.name}" for x in item])
     up_up_operator = "\n".join(up_operators)
     up_info = f"当期UP干员:\n{up_up_operator}"
 
@@ -359,7 +362,7 @@ def draw_ten_arknights(user_id: int) -> str:
     # 获得当期up干员
     up_operators = []
     for item in [x.operator for x in UP_OPERATOR]:
-        up_operators.extend([f"【{x.star}★】{x.name}" for x in item])
+        up_operators.extend([f"【{x.star}☆】{x.name}" for x in item])
     up_up_operator = "\n".join(up_operators)
     up_info = f"当期UP干员:\n{up_up_operator}"
 
