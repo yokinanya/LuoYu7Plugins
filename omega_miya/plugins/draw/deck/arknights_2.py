@@ -29,25 +29,26 @@ UP_OPERATOR: List[UpEvent] = [
     UpEvent(
         star=6,
         operator=[
-            Operator(name="百炼嘉维尔/Gavial The Invincible", star=6, limited=True, recruit_only=False, event_only=False, special_only=True),
-            Operator(name="鸿雪/NO3EMKA", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="假日威龙陈/Ch'en the Holungday", star=6, limited=True, recruit_only=False, event_only=False, special_only=True),
+            Operator(name="玛恩纳/Mlynar", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
     UpEvent(
         star=5,
         operator=[
-            Operator(name="晓歌/CANTABILE", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="但书/Proviso", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="芙兰卡/Franka", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
 ]
 
 ALL_OPERATOR: List[Operator] = [
-    Operator(name="至简/MINIMALIST", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
-    Operator(name="晓歌/CANTABILE", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
-    Operator(name="鸿雪/NO3EMKA", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="玛恩纳/Mlynar", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="但书/Proviso", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="至简/Minimalist", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
+    Operator(name="晓歌/Cantabile", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="鸿雪/Позёмка", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="百炼嘉维尔/Gavial The Invincible", star=6, limited=True, recruit_only=False, event_only=False, special_only=True),
     Operator(name="多萝西/Dorothy", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="承曦格雷伊/Greyy The Lightningbearer", star=5, limited=False, recruit_only=False, event_only=False, special_only=True),

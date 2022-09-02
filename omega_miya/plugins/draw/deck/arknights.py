@@ -46,6 +46,8 @@ UP_OPERATOR: List[UpEvent] = [
 ]
 
 ALL_OPERATOR: List[Operator] = [
+    Operator(name="玛恩纳/Mlynar", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="但书/Proviso", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="至简/MINIMALIST", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
     Operator(name="晓歌/CANTABILE", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="鸿雪/NO3EMKA", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
