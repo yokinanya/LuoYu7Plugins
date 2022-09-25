@@ -25,9 +25,9 @@ async def handle_del(matcher: Matcher, bot: Bot, event: MessageEvent):
 
 
 @del_tmp.got('check', prompt='确认吗?\n【是/否】')
-async def handle_del(matcher: Matcher, bot: Bot, event: MessageEvent, check: str = ArgStr('check'), folder: str = ArgStr('Folder')):
+async def handle_del(matcher: Matcher, bot: Bot, event: MessageEvent, check: str = ArgStr('check')):
     check = check.strip()
     if check != '是':
         await matcher.finish('那就不删了哦')
-    delete_folder(folder)
+    delete_folder("tmp")
     await matcher.finish('删除成功')

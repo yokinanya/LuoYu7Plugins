@@ -170,9 +170,12 @@ cython_debug/
 /omega_miya/params.py
 /omega_miya/result.py
 /omega_miya/database
+/starfeathers/plugins/nonebot_plugin_arkrecord
+/starfeathers/plugins/nonebot_plugin_bawiki
 /taffy_voice.txt
 /test.py
 /*.ipynb
+starfeathers/data/*.db
 
 # vscode
 .vscode/
