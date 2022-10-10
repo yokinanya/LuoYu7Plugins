@@ -9,7 +9,7 @@ from nonebot.params import ArgStr, CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.typing import T_State
 from omega_miya.service import init_processor_state
-from .utils import download_db_to_device, generate_cave, write_db, upload_db_to_webdav
+from .utils import generate_cave, write_db
 
 
 # 注册事件响应器
@@ -24,21 +24,6 @@ cave = on_regex(
 
 addcave = on_command(
     cmd='addcave',
-    permission=SUPERUSER,
-    priority=10,
-    block=True,
-)
-
-uploadcave = on_command(
-    cmd='uploadcave',
-    aliases={"上传回声洞数据"},
-    permission=SUPERUSER,
-    priority=10,
-    block=True,
-)
-downcave = on_command(
-    cmd='downcave',
-    aliases={"下载回声洞数据"},
     permission=SUPERUSER,
     priority=10,
     block=True,
@@ -68,15 +53,3 @@ async def add_cave(matcher: Matcher, bot: Bot, event: MessageEvent, cave_msg: st
     return_msg = write_db(cave_msg, uploader)
     msg =  f"{cave_msg}\n{uploader}\n{return_msg}"
     await addcave.finish(return_msg)
-
-
-@uploadcave.handle()
-async def upload(bot: Bot, event: GroupMessageEvent, state: T_State):
-    msg = upload_db_to_webdav()
-    await uploadcave.finish(msg)
-
-
-@downcave.handle()
-async def download(bot: Bot, event: GroupMessageEvent, state: T_State):
-    msg = download_db_to_device()
-    await downcave.finish(msg)

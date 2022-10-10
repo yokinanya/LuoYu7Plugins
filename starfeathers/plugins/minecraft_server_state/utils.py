@@ -1,5 +1,6 @@
 import json
 from mcstatus import JavaServer
+from mcstatus import BedrockServer
 import base64
 import re
 import uuid
