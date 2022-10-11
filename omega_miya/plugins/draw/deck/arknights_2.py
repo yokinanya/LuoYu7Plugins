@@ -29,21 +29,34 @@ UP_OPERATOR: List[UpEvent] = [
     UpEvent(
         star=6,
         operator=[
-            Operator(name="玛恩纳/Mlynar", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="白铁/Stainless", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
     UpEvent(
         star=5,
         operator=[
-            Operator(name="但书/Proviso", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="芙兰卡/Franka", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="明椒/Paprika", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="崖心/Cliffheart", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
+    UpEvent(
+        star=4,
+        operator=[
+            Operator(name="铅踝/Totter", star=4, limited=False, recruit_only=False, event_only=False, special_only=False),
+        ],
+        zoom=0.2
+    )
 ]
 
 ALL_OPERATOR: List[Operator] = [
+    Operator(name="白铁/Stainless", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="明椒/Paprika", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="达格达/Dagda", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
+    Operator(name="铅踝/Totter", star=4, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="海沫/Highmore", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
+    Operator(name="罗小黑/Luo Xiaohei", star=4, limited=False, recruit_only=False, event_only=True, special_only=False),
     Operator(name="玛恩纳/Mlynar", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="但书/Proviso", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="至简/Minimalist", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),

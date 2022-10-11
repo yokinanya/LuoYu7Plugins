@@ -29,23 +29,32 @@ UP_OPERATOR: List[UpEvent] = [
     UpEvent(
         star=6,
         operator=[
-            Operator(name="早露/Роса", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="斯卡蒂/Skadi", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="空弦/Archetto", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="艾丽妮/Irene", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
     UpEvent(
         star=5,
         operator=[
-            Operator(name="洛洛/Rockrock", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="幽灵鲨/Specter", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="绮良/Kirara", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="诗怀雅/Swire", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="拉普兰德/Lappland", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="初雪/Pramanix", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
 ]
 
+# 干员条目模板
+# Operator(name="", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+
 ALL_OPERATOR: List[Operator] = [
+    # Operator(name="白铁/Stainless", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+    # Operator(name="明椒/Paprika", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="达格达/Dagda", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
+    # Operator(name="铅踝/Totter", star=4, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="海沫/Highmore", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
+    Operator(name="罗小黑/Luo Xiaohei", star=4, limited=False, recruit_only=False, event_only=True, special_only=False),
     Operator(name="玛恩纳/Mlynar", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="但书/Proviso", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="至简/MINIMALIST", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
