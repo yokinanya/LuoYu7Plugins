@@ -29,17 +29,17 @@ UP_OPERATOR: List[UpEvent] = [
     UpEvent(
         star=6,
         operator=[
-            Operator(name="空弦/Archetto", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="艾丽妮/Irene", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="棘刺/Thorns", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="嵯峨/Saga", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
     UpEvent(
         star=5,
         operator=[
-            Operator(name="诗怀雅/Swire", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="拉普兰德/Lappland", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
-            Operator(name="初雪/Pramanix", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="槐琥/Waai Fu", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="星极/Astesia", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+            Operator(name="掠风/Windflit", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
         ],
         zoom=0.5,
     ),
@@ -49,10 +49,16 @@ UP_OPERATOR: List[UpEvent] = [
 # Operator(name="", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
 
 ALL_OPERATOR: List[Operator] = [
-    # Operator(name="白铁/Stainless", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
-    # Operator(name="明椒/Paprika", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="缄默德克萨斯/Texas The Omertosa", star=6, limited=True, recruit_only=False, event_only=False, special_only=True),
+    # Operator(name="斥罪/Penance", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="伺夜/Vigil", star=6, limited=False, recruit_only=False, event_only=True, special_only=False),
+    # Operator(name="子月/Lunacub", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="雪绒/Qanipalaat", star=5, limited=False, recruit_only=True, event_only=False, special_only=False),
+    Operator(name="石英/Quartz", star=4, limited=False, recruit_only=True, event_only=False, special_only=False),
+    Operator(name="白铁/Stainless", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="明椒/Paprika", star=5, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="达格达/Dagda", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
-    # Operator(name="铅踝/Totter", star=4, limited=False, recruit_only=False, event_only=False, special_only=False),
+    Operator(name="铅踝/Totter", star=4, limited=False, recruit_only=False, event_only=False, special_only=False),
     Operator(name="海沫/Highmore", star=5, limited=False, recruit_only=False, event_only=True, special_only=False),
     Operator(name="罗小黑/Luo Xiaohei", star=4, limited=False, recruit_only=False, event_only=True, special_only=False),
     Operator(name="玛恩纳/Mlynar", star=6, limited=False, recruit_only=False, event_only=False, special_only=False),

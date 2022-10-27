@@ -4,7 +4,6 @@ import pathlib
 import random
 import sqlite3
 from nonebot.adapters.onebot.v11.message import Message
-from starfeathers.utils.webdav import upload_file, download_file
 
 db_dir = pathlib.Path(os.path.abspath(sys.path[0])).joinpath('starfeathers/data')
 cave_db = os.path.join(db_dir, "cave.db")
@@ -52,22 +51,3 @@ def generate_cave():
         \n—— {uploader}'
     )
     return message
-
-
-def upload_db_to_webdav():
-    try:
-        upload_file(cave_db, "cave", "cave.db")
-        msg = "Upload file to webdav success"
-    except:
-        msg = "Upload file to webdav failed"
-    return msg
-
-
-def download_db_to_device():
-    try:
-        os.remove(cave_db)
-        download_file(cave_db, "cave", "cave.db")
-        msg = "Download Successfully"
-    except:
-        msg = "Download Failed"
-    return msg

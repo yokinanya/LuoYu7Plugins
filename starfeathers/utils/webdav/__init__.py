@@ -10,20 +10,12 @@ webdav_token = Config.parse_obj(get_driver().config).webdav_token
 client = Client(base_url=webdav_url, auth=(webdav_username, webdav_token))
 
 
-def ls_folder(t2path: str, detail: bool = False):
-    if not client.exists(path=f'/Nonebot/{t2path}'):
-        client.mkdir(path=f'/Nonebot/{t2path}')
-    client.ls(path=f'/Nonebot/{t2path}', detail=detail)
+def check_exists(cloudpath, detail: bool = False):
+    if not client.exists(path=cloudpath):
+        client.mkdir(path=cloudpath)
+    client.ls(path=cloudpath, detail=detail)
 
 
-def upload_file(path, t2path: str, filename: str):
-    ls_folder(t2path)
-    client.upload_file(from_path=path, to_path=f'/Nonebot/{t2path}/{filename}', overwrite=True)
-
-
-def download_file(path: str, t2path: str, filename: str):
-    client.download_file(from_path=f'/Nonebot/{t2path}/{filename}', to_path=path)
-
-
-def remove_file(t2path: str, filename: str):
-    client.remove(f'/Nonebot/{t2path}/{filename}')
+def upload(localpath, cloudpath):
+    check_exists(cloudpath)
+    client.upload_file(from_path=localpath, to_path=cloudpath, overwrite=True)

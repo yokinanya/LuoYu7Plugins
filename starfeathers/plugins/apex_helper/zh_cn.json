@@ -12,7 +12,10 @@
     "arenas_phase_runner": "相位穿梭器",
     "arenas_habitat": "栖息地",
     "arenas_composite": "原料厂",
-    "unknown_rotation": "无数据"
+    "unknown_rotation": "无数据",
+    "Unknown": "无数据",
+    "fragment":"",
+    "skulltown":"骷髅镇"
   },
   "craft": {
     "optic_hcog_bruiser": "2倍全息衍射式瞄准镜“格斗家”",
@@ -78,6 +81,9 @@
     "Ash": "艾许",
     "Mad_Maggie": "疯玛吉",
     "Newcastle": "纽卡斯尔",
-    "Vantage":"万蒂奇"
+    "Vantage": "万蒂奇"
+  },
+  "event": {
+    "Control": "控制"
   }
 }

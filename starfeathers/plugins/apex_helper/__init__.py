@@ -30,11 +30,12 @@ def lang(langode: str):
         raritys = langs["rarity"]
         rank = langs["rank"]
         legends = langs["legends"]
+        event = langs["event"]
         lang.close()
-        return maps, crafts, raritys, rank, legends
+        return maps, crafts, raritys, rank, legends, event
 
 
-maps, crafts, raritys, rank, legends = lang("zh_cn")
+maps, crafts, raritys, rank, legends, event = lang("zh_cn")
 
 
 def read_userdata(qqid: int):
@@ -99,6 +100,48 @@ def stat(sname: str, platform: str):
     except Exception:
         msg = "查询失败，请检查用户名是否正确然后重试，steam平台请输入orginid"
     return msg
+
+
+def update_map():
+    map_URL = f"https://api.mozambiquehe.re/maprotation?auth={apexApi}&version=2"
+    map_jsonobj = requests.get(map_URL).json()
+    return map_jsonobj
+
+
+def get_map(type: str, jsonobj):
+    mapremaintime = jsonobj[type]["current"]["remainingTimer"]
+    mapcode = jsonobj[type]["current"]["code"]
+    nextcode = jsonobj[type]["next"]["code"]
+    if mapcode in maps.keys():
+        mapcode = maps[mapcode]
+    if nextcode in maps.keys():
+        nextcode = maps[nextcode]
+    name = "当前地图：" + mapcode
+    remainingTimer = "剩余时间：" + mapremaintime
+    next = "下一个地图：" + nextcode
+    info = f"{name}\n{remainingTimer}\n{next}"
+    return info
+
+
+def get_map_ltm(jsonobj):
+    isActive = jsonobj["ltm"]["current"]["isActive"]
+    eventName = jsonobj["ltm"]["current"]["eventName"]
+    mapremaintime = jsonobj["ltm"]["current"]["remainingTimer"]
+    mapcode = jsonobj["ltm"]["current"]["code"]
+    nextcode = jsonobj["ltm"]["next"]["code"]
+    if mapcode in maps.keys():
+        mapcode = maps[mapcode]
+    if nextcode in maps.keys():
+        nextcode = maps[nextcode]
+    if eventName in event.keys():
+        eventName = event[eventName]
+    name = "当前地图：" + mapcode
+    remainingTimer = "剩余时间：" + mapremaintime
+    next = "下一个地图：" + nextcode
+    info = f"{eventName}：\n{name}\n{remainingTimer}\n{next}"
+    if isActive != True:
+        info = "暂无活动"
+    return info
 
 
 @inquire.handle()
@@ -200,32 +243,19 @@ async def help_handle(bot: Bot, event: Event):
 @map.handle()
 async def map_handle(bot: Bot, event: Event):
     await map.send("查询地图轮换中,请稍后", at_sender=False)
-    URL = f"https://api.mozambiquehe.re/maprotation?auth={apexApi}&version=2"
-    jsonobj = requests.get(URL).json()
-
-    def get_map(type: str):
-        mapremaintime = jsonobj[type]["current"]["remainingTimer"]
-        mapcode = jsonobj[type]["current"]["code"]
-        nextcode = jsonobj[type]["next"]["code"]
-        if mapcode in maps.keys():
-            mapcode = maps[mapcode]
-        if nextcode in maps.keys():
-            nextcode = maps[nextcode]
-        name = "当前地图：" + mapcode
-        remainingTimer = "剩余时间：" + mapremaintime
-        next = "下一个地图：" + nextcode
-        info = f"{name}\n{remainingTimer}\n{next}"
-        return info
-
     # battle_royale
-    battle_royale = "大逃杀：\n" + get_map("battle_royale")
+    map_jsonobj = update_map()
+    battle_royale = "大逃杀：\n" + get_map("battle_royale", map_jsonobj)
     # ranked
-    ranked = "积分联赛：\n" + get_map("ranked")
+    ranked = "积分联赛：\n" + get_map("ranked", map_jsonobj)
     # arenas
-    arenas = "竞技场：\n" + get_map("arenas")
+    arenas = "竞技场：\n" + get_map("arenas", map_jsonobj)
     # arenasRanked
-    arenasRanked = "竞技场排位：\n" + get_map("arenasRanked")
-    # control
-    # control = "控制：\n"+ get_map("control")
+    arenasRanked = "竞技场排位：\n" + get_map("arenasRanked", map_jsonobj)
+    # try:
+    #     # ltm
+    #     ltm = get_map_ltm(map_jsonobj)
+    #     msg = f"{battle_royale}\n{ranked}\n{arenas}\n{arenasRanked}\n{ltm}"
+    # except:
     msg = f"{battle_royale}\n{ranked}\n{arenas}\n{arenasRanked}"
     await map.send(msg)
