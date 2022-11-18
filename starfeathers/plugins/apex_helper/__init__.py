@@ -17,7 +17,6 @@ apexApi = Config.parse_obj(get_driver().config).apex_api_token
 inquire = on_command("inquire", aliases={"查询"}, priority=50, block=True)
 connect = on_command("connect", aliases={"绑定"}, priority=50, block=True)
 crafting = on_command("craft", aliases={"复制器"}, priority=50, block=True)
-help = on_command("apexhelp", aliases={"apex帮助", "Apex帮助"}, priority=50, block=True)
 map = on_command("map", aliases={"地图"}, priority=50, block=True)
 
 
@@ -32,7 +31,7 @@ def lang(langode: str):
         legends = langs["legends"]
         event = langs["event"]
         lang.close()
-        return maps, crafts, raritys, rank, legends, event
+    return maps, crafts, raritys, rank, legends, event
 
 
 maps, crafts, raritys, rank, legends, event = lang("zh_cn")
@@ -109,9 +108,18 @@ def update_map():
 
 
 def get_map(type: str, jsonobj):
-    mapremaintime = jsonobj[type]["current"]["remainingTimer"]
-    mapcode = jsonobj[type]["current"]["code"]
-    nextcode = jsonobj[type]["next"]["code"]
+    try:
+        mapremaintime = jsonobj[type]["current"]["remainingTimer"]
+    except:
+        mapremaintime = "查询失败"
+    try:
+        mapcode = jsonobj[type]["current"]["code"]
+    except:
+        mapcode = "查询失败"
+    try:
+        nextcode = jsonobj[type]["next"]["code"]
+    except:
+        nextcode = "查询失败"
     if mapcode in maps.keys():
         mapcode = maps[mapcode]
     if nextcode in maps.keys():
@@ -232,12 +240,6 @@ async def craft_handle(bot: Bot, event: Event):
     weeklycraft = f"{weeklycraft[0]} , {weeklycraft[1]}"
     msg = f"今日轮换制造：{dailycraft}\n本周轮换制造：{weeklycraft}"
     await crafting.send(msg)
-
-
-@help.handle()
-async def help_handle(bot: Bot, event: Event):
-    msg = "Apex助手\n查询地图轮换：#地图\n查询制造器轮换：#复制器\n查询战绩：#查询 <id>\n查看当前列表：#Apex帮助"
-    await help.send(msg, at_sender=False)
 
 
 @map.handle()

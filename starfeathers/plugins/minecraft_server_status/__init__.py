@@ -10,7 +10,7 @@ from nonebot.typing import T_State
 
 from .utils import get_ip, mcstate, read_data, write_data, get_favicon, decode_image
 
-mc_state = on_command("mcstate", aliases={"服务器状态", "mcstate"}, priority=50, block=True)
+mc_state = on_command("mcstatus", aliases={"服务器状态", "mcstatus"}, priority=50, block=True)
 serverip = os.path.abspath(os.path.join(os.path.dirname(__file__), r"serverip.json"))
 su = get_driver().config.superusers
 

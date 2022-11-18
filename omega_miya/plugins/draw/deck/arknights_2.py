@@ -42,7 +42,7 @@ UP_OPERATOR: List[UpEvent] = [
             Operator(name="耀骑士临光/Nearl the Radiant Knight", star=6, limited=True, recruit_only=False, event_only=False, special_only=True),
         ],
         zoom=0.25
-    )
+    ),
     UpEvent(
         star=5,
         operator=[
