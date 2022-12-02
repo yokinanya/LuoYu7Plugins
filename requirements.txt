@@ -23,7 +23,6 @@ py7zr~=0.20.0
 zhconv~=1.4.3
 rapidfuzz~=2.4.3
 emoji~=2.0.0
-mcstatus
-webdav4
-xlsxwriter
-nonebot-plugin-htmlrender
+mcstatus~=9.2.0
+webdav4~=0.9.7
+nonebot-plugin-htmlrender~=0.1.1

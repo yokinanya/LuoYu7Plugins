@@ -173,11 +173,11 @@ cython_debug/
 /starfeathers/plugins/nonebot_plugin_arkrecord
 /starfeathers/plugins/nonebot_plugin_bawiki
 /starfeathers/plugins/nonebot_plugin_directlinker
-/starfeathers/plugins/nonebot_plugin_twitter
 /taffy_voice.txt
 /test.py
 /*.ipynb
-starfeathers/data/*.db
+starfeathers/data/
 
 # vscode
 .vscode/
+/omega_miya/plugins/repeater

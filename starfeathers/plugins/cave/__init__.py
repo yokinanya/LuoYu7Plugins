@@ -8,7 +8,6 @@ from nonebot.matcher import Matcher
 from nonebot.params import ArgStr, CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.typing import T_State
-from omega_miya.service import init_processor_state
 from .utils import generate_cave, write_db
 
 
@@ -16,7 +15,6 @@ from .utils import generate_cave, write_db
 cave = on_regex(
     pattern=r"^(.|。)cave$",
     flags=re.I,
-    state=init_processor_state(name='cave', level=10),
     permission=GROUP,
     priority=10,
     block=True,
