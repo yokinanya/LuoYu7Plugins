@@ -37,7 +37,6 @@ async def handle_city(bot: Bot, event: GroupMessageEvent, ip: str = ArgStr('IP')
     try:
         img_base64 = get_favicon(ip)
         img_url = r"file://" + decode_image(img_base64)
-        print(img_url)
         img_seg = MessageSegment.image(img_url)
         msg = img_seg + "\n" + mcstate(ip)
     except:

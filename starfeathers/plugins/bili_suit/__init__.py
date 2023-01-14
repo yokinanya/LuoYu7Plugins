@@ -27,6 +27,7 @@ async def handle_city(event: GroupMessageEvent, suitid: str = ArgStr('suit_id'))
         if not final_status == 0:
             SAVEFILE = zip_suit(suit_name)
             bot = get_bot("3147892066")
+            await getsuit.send(f"装扮【{suit_name}】下载成功，正在上传，这可能需要几分钟")
             try:
                 await bot.call_api(
                     "upload_group_file",
@@ -38,10 +39,10 @@ async def handle_city(event: GroupMessageEvent, suitid: str = ArgStr('suit_id'))
                 if isinstance(e, ActionFailed) and e.info["wording"] == "server" \
                                                                         " requires unsupported ftn upload":
                     await getsuit.finish(message=Message(MessageSegment.text(
-                        "[ERROR]  文件上传失败\r\n[原因]  机器人缺少上传文件的权限\r\n[解决办法]  "
+                        "[ERROR]  文件上传失败\r\n[原因]  机器人缺少上传文件的权限\r\n[解决办法]"
                         "请将机器人设置为管理员或者允许群员上传文件")))
                 elif isinstance(e, NetworkError):
-                    await getsuit.finish(message=Message(MessageSegment.text(
-                        "[ERROR]  文件上传失败\r\n[原因]  上传超时")))
+                    pass
+                    # await getsuit.finish(message=Message(MessageSegment.text("[ERROR]  文件上传失败\r\n[原因]  上传超时")))
         else:
             await getsuit.finish(f'{suit_name} 下载失败')

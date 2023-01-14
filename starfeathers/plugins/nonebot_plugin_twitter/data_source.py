@@ -175,7 +175,11 @@ async def baidu_translate(appid, query, token):
     data = result.json()
     if data.get("error_code") != None:
         return text
+    source = data["from"]
+    source_zh = {"jp": "日语", "en": "英语"}
+    if source in source_zh.keys():
+        source = source_zh[source]
     data = data["trans_result"]
     for row in data:
         text += row["dst"] + "\n"
-    return "推文翻译：\n" + text
+    return f"由 百度翻译 翻译自 {source}：\n" + text

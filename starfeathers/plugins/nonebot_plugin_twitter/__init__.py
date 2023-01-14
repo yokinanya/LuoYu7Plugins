@@ -33,7 +33,7 @@ if config.api_url == "" and config.github_token == "":
 headers = {"Authorization": f"token {config.github_token}"}
 
 try:
-    with httpx.Client(proxies=config.proxy) as client:
+    with httpx.Client() as client:
         response = client.get(url=config.api_url, headers=headers)
     config.token = response.json()["value"]
 except:
