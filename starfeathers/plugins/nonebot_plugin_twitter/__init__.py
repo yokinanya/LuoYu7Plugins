@@ -31,11 +31,17 @@ if config.api_url == "" and config.github_token == "":
     raise Exception("这可能是您第一次运行本插件，请按照文档填写 config.json 后重新运行！")
 
 headers = {"Authorization": f"token {config.github_token}"}
+api_url_fastgit = config.api_url.replace("raw.githubusercontent.com","raw.fastgit.org")
 
 try:
-    with httpx.Client() as client:
-        response = client.get(url=config.api_url, headers=headers)
-    config.token = response.json()["value"]
+    try:
+        with httpx.Client() as client:
+            response = client.get(url=config.api_url, headers=headers)
+        config.token = response.json()["value"]
+    except:
+        with httpx.Client() as client:
+            response = client.get(url=api_url_fastgit, headers=headers)
+        config.token = response.json()["value"]
 except:
     raise Exception("token初始化失败，请检查网络设置或API地址是否正确！")
 
@@ -195,7 +201,7 @@ async def handle(bot: Bot, event: MessageEvent):
     else:
         id2 = 0
 
-    msg = "用户名(推特ID)\n"
+    msg = "用户名(推特ID)"
     content = ""
     user = model.GetUserList()
 
@@ -203,7 +209,7 @@ async def handle(bot: Bot, event: MessageEvent):
         card = model.GetCard(index[0], id, id2)
         if len(card) != 0:
             trans = str(card[2]).replace("1", "推文翻译：开").replace("0", "推文翻译：关")
-            content += f"{index[1]}({index[0]})\n{trans}"
+            content += f"\n{index[1]}({index[0]})\n{trans}"
 
     if content == "":
         msg = "当前关注列表为空！"
