@@ -3,7 +3,6 @@ from os.path import exists as osPathExists
 from os import makedirs as osMakedirs
 import os
 import zipfile
-from nonebot.adapters.onebot.v11 import (MessageSegment, Message, ActionFailed, NetworkError, Bot, GroupMessageEvent, PrivateMessageEvent)
 
 SAVEDIR = os.path.abspath(os.path.join(os.path.dirname(__file__), r"suit"))
 

@@ -2,10 +2,13 @@
 
 **不依赖omegamiya的插件**
 - Apex信息查询
+- 哔哩哔哩装扮下载
+- 游戏兑换码查询
+- 联ban黑名单
+- 帮助（完全迁移至网页文档）
 - Minecraft服务器信息查询
 - 简易群管
 - 缓存及日志管理（不支持Windows系统
-- 回声洞
 
 **依赖[OmegaMiya](https://github.com/Ailitonia/omega-miya)的插件**
 - 关键词回复

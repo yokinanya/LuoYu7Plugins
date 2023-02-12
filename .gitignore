@@ -173,7 +173,8 @@ cython_debug/
 /starfeathers/plugins/nonebot_plugin_arkrecord
 /starfeathers/plugins/nonebot_plugin_bawiki
 /starfeathers/plugins/nonebot_plugin_directlinker
-/taffy_voice.txt
+/*_voice.txt
+/*_voice.py
 /test.py
 /*.ipynb
 starfeathers/data/

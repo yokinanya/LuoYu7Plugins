@@ -176,7 +176,17 @@ async def baidu_translate(appid, query, token):
     if data.get("error_code") != None:
         return text
     source = data["from"]
-    source_zh = {"jp": "日语", "en": "英语"}
+    source_zh = {
+        "jp": "日语",
+        "en": "英语",
+        "yue": "粤语",
+        "kor": "韩语",
+        "cht": "繁体中文",
+        "zh": "中文",
+        "wyw": "文言文",
+        "fra": "法语",
+        "de": "德语"
+    }
     if source in source_zh.keys():
         source = source_zh[source]
     data = data["trans_result"]

@@ -1,14 +1,17 @@
 import json
 import os
 import requests
+import httpx
 from nonebot import get_driver
 from .config import Config
 
 apexApi = Config.parse_obj(get_driver().config).apex_api_token
+botapi = "https://0sf-database.vercel.app/apex"
+vtuber_data = f"{botapi}/vtuber.json"
 
 
 def lang(langode: str):
-    lang = os.path.abspath(os.path.join(os.path.dirname(__file__), f"{langode}.json"))
+    lang = os.path.abspath(os.path.join(os.path.dirname(__file__), f"{botapi}/{langode}.json"))
     with open(lang, "r", encoding="utf-8") as lang:
         langs = json.load(lang)
         maps = langs["map"]
@@ -25,10 +28,10 @@ maps, crafts, raritys, rank, legends, event = lang("zh_cn")
 
 
 def vtuver():
-    vtbdata = os.path.abspath(os.path.join(os.path.dirname(__file__), r"vtuber.json"))
-    with open(vtbdata, "r", encoding="utf-8") as vtuber:
-        vtbdatas = json.load(vtuber)
-        vtuber.close()
+    with httpx.Client() as client:
+        response = client.get(url=vtuber_data)
+    vtbdata = response.json()
+    
     return vtbdatas
 
 
