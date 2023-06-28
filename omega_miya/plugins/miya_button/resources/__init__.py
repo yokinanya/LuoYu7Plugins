@@ -10,8 +10,6 @@ from omega_miya.utils.process_utils import run_async_catching_exception
 
 from .model import Voice
 from .miya_voice import miya_voices
-from .mnk_voice import mnk_voices
-from .taffy_voice import taffy_voices
 
 
 _VOICE_RESOURCE_NODE: Literal['miya_button_resource'] = 'miya_button_resource'
@@ -19,9 +17,7 @@ _VOICE_RESOURCE_NODE: Literal['miya_button_resource'] = 'miya_button_resource'
 _DEFAULT_VOICE_RESOURCE: Voice = miya_voices
 """默认的按钮资源"""
 _INTERNAL_VOICE_RESOURCE: dict[str, Voice] = {
-    'Miya按钮': miya_voices,
-    'MNK按钮': mnk_voices,
-    '塔菲按钮': taffy_voices,
+    'Miya按钮': miya_voices
 }
 
 
@@ -64,7 +60,8 @@ async def set_voice_resource(resource_name: str, bot: Bot, event: GroupMessageEv
     entity = InternalBotGroup(bot_id=bot.self_id, parent_id=bot.self_id, entity_id=str(event.group_id))
     plugin_name = matcher.plugin.name
     module_name = matcher.plugin.module_name
-    result = await entity.set_auth_setting(module=module_name, plugin=plugin_name, node=_VOICE_RESOURCE_NODE, available=1, value=resource_name)
+    result = await entity.set_auth_setting(module=module_name, plugin=plugin_name, node=_VOICE_RESOURCE_NODE,
+                                           available=1, value=resource_name)
     return result
 
 

@@ -2,13 +2,12 @@
 @Author         : Ailitonia
 @Date           : 2022/05/07 21:02
 @FileName       : render.py
-@Project        : nonebot2_miya
+@Project        : nonebot2_miya 
 @Description    : Sticker Render
 @GitHub         : https://github.com/Ailitonia
-@Software       : PyCharm
+@Software       : PyCharm 
 """
 
-import imageio
 import numpy
 from typing import Type, Any
 from datetime import date
@@ -43,6 +42,12 @@ class TraitorRender(StickerRender):
     _font: LocalResource = _FONT_RESOURCE('pixel.ttf')
     _default_output_width = 800
 
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
     def _handler(self) -> bytes:
         self.source_image = self._static_resource
         image = self._load_source_image()
@@ -64,7 +69,8 @@ class TraitorRender(StickerRender):
         font_main = ImageFont.truetype(self._font.resolve_path, font_main_size)
         # 按长度切分文本
         test_main_fin = TextUtils(text=text).split_multiline(width=int(image.width * 0.53), font=font_main).text
-        ImageDraw.Draw(text_main_img).multiline_text(xy=(0, 0), text=test_main_fin, font=font_main, spacing=12, fill=(0, 0, 0))
+        ImageDraw.Draw(text_main_img).multiline_text(xy=(0, 0), text=test_main_fin, font=font_main, spacing=12,
+                                                     fill=(0, 0, 0))
 
         # 处理文字部分旋转
         text_num_img = text_num_img.rotate(angle=-9, expand=True, resample=Image.BICUBIC, center=(0, 0))
@@ -87,6 +93,12 @@ class JichouRender(StickerRender):
     _sticker_name: str = 'jichou'
     _static_resource: LocalResource = _STATIC_RESOURCE('jichou', 'default_bg.png')
     _font: LocalResource = _FONT_RESOURCE('SourceHanSansSC-Regular.otf')
+
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
 
     def _handler(self) -> bytes:
         self.source_image = self._static_resource
@@ -126,6 +138,12 @@ class PhlogoRender(StickerRender):
     _sticker_name: str = 'phlogo'
     _font: LocalResource = _FONT_RESOURCE('SourceHanSansSC-Heavy.otf')
     _default_font_size = 320
+
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
 
     def _handler(self) -> bytes:
         # 处理文本主体
@@ -195,6 +213,12 @@ class LuxunSayRender(StickerRender):
     _static_resource: LocalResource = _STATIC_RESOURCE('luxunsay', 'default_bg.png')
     _font: LocalResource = _FONT_RESOURCE('SourceHanSansSC-Regular.otf')
 
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
     def _handler(self) -> bytes:
         self.source_image = self._static_resource
         image = self._load_source_image()
@@ -256,6 +280,12 @@ class LuxunWriteRender(LuxunSayRender):
     _sticker_name: str = 'luxunwrite'
     _static_resource: LocalResource = _STATIC_RESOURCE('luxunwrite', 'default_bg.png')
 
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
 
 class JiangzhuangRender(StickerRender):
     """奖状表情包模板
@@ -267,6 +297,12 @@ class JiangzhuangRender(StickerRender):
     _static_resource: LocalResource = _STATIC_RESOURCE('jiangzhuang', 'default_bg.png')
     _font: LocalResource = _FONT_RESOURCE('HanYiWeiBeiJian.ttf')
     _default_output_width = 1024
+
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
 
     def _handler(self) -> bytes:
         self.source_image = self._static_resource
@@ -302,6 +338,12 @@ class XibaoHorizontalRender(StickerRender):
     _static_resource: LocalResource = _STATIC_RESOURCE('xibaoh', 'default_bg.png')
     _font: LocalResource = _FONT_RESOURCE('HanYiWeiBeiJian.ttf')
     _default_output_width = 1024
+
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
 
     def _handler(self) -> bytes:
         self.source_image = self._static_resource
@@ -342,6 +384,12 @@ class XibaoVerticalRender(StickerRender):
     _font: LocalResource = _FONT_RESOURCE('SourceHanSerif-Bold.ttc')
     _default_output_width = 1024
 
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
     def _handler(self) -> bytes:
         self.source_image = self._static_resource
         image = self._load_source_image()
@@ -381,10 +429,7 @@ class DefaultRender(StickerRender):
     _font: LocalResource = _FONT_RESOURCE('msyhbd.ttc')
     _need_external_img: bool = True
 
-    def _handler(self) -> bytes:
-        image = self._load_source_image()
-        image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
-
+    def _static_handler(self, image: Image) -> bytes:
         font_size = image.width // 8
         text_stroke_width = int(font_size / 20)
         font = ImageFont.truetype(self._font.resolve_path, font_size)
@@ -407,6 +452,35 @@ class DefaultRender(StickerRender):
         content = self._get_pil_image(image=image)
         return content
 
+    def _gif_handler(self, frames: list[Image], duration: float) -> bytes:
+        content = self._generate_gif_from_bytes_seq(
+            frames=(self._static_handler(image=image) for image in frames),
+            duration=duration
+        )
+        return content
+
+    def _handler(self) -> bytes:
+        fm, info = self._get_source_image_info()
+        if fm == 'GIF':
+            frames = []
+            frame_index = 0
+            while True:
+                try:
+                    image = self._load_source_image(frame=frame_index)
+                    frames.append(image)
+                    frame_index += 1
+                except EOFError:
+                    break
+            duration = info.get('duration', 60) / 1000
+            self._default_output_format = 'gif'
+            content = self._gif_handler(frames=frames, duration=duration)
+        else:
+            image = self._load_source_image()
+            image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
+            content = self._static_handler(image=image)
+
+        return content
+
 
 class LittleAngelRender(StickerRender):
     """小天使表情包模板
@@ -419,10 +493,7 @@ class LittleAngelRender(StickerRender):
     _font: LocalResource = _FONT_RESOURCE('msyhbd.ttc')
     _need_external_img: bool = True
 
-    def _handler(self) -> bytes:
-        image = self._load_source_image()
-        image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
-
+    def _static_handler(self, image: Image) -> bytes:
         # 处理文本内容
         font_size_up = int(image.width / 7)
         font_up = ImageFont.truetype(self._font.resolve_path, font_size_up)
@@ -466,6 +537,35 @@ class LittleAngelRender(StickerRender):
         content = self._get_pil_image(image=background)
         return content
 
+    def _gif_handler(self, frames: list[Image], duration: float) -> bytes:
+        content = self._generate_gif_from_bytes_seq(
+            frames=(self._static_handler(image=image) for image in frames),
+            duration=duration
+        )
+        return content
+
+    def _handler(self) -> bytes:
+        fm, info = self._get_source_image_info()
+        if fm == 'GIF':
+            frames = []
+            frame_index = 0
+            while True:
+                try:
+                    image = self._load_source_image(frame=frame_index)
+                    frames.append(image)
+                    frame_index += 1
+                except EOFError:
+                    break
+            duration = info.get('duration', 60) / 1000
+            self._default_output_format = 'gif'
+            content = self._gif_handler(frames=frames, duration=duration)
+        else:
+            image = self._load_source_image()
+            image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
+            content = self._static_handler(image=image)
+
+        return content
+
 
 class WhiteBackgroundRender(StickerRender):
     """白底加字表情包模板
@@ -478,10 +578,7 @@ class WhiteBackgroundRender(StickerRender):
     _font: LocalResource = _FONT_RESOURCE('msyhbd.ttc')
     _need_external_img: bool = True
 
-    def _handler(self) -> bytes:
-        image = self._load_source_image()
-        image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
-
+    def _static_handler(self, image: Image) -> bytes:
         font_size = image.width // 10
         font = ImageFont.truetype(self._font.resolve_path, font_size)
         text_w, text_h = font.getsize_multiline(self.text)
@@ -506,6 +603,35 @@ class WhiteBackgroundRender(StickerRender):
         content = self._get_pil_image(image=background)
         return content
 
+    def _gif_handler(self, frames: list[Image], duration: float) -> bytes:
+        content = self._generate_gif_from_bytes_seq(
+            frames=(self._static_handler(image=image) for image in frames),
+            duration=duration
+        )
+        return content
+
+    def _handler(self) -> bytes:
+        fm, info = self._get_source_image_info()
+        if fm == 'GIF':
+            frames = []
+            frame_index = 0
+            while True:
+                try:
+                    image = self._load_source_image(frame=frame_index)
+                    frames.append(image)
+                    frame_index += 1
+                except EOFError:
+                    break
+            duration = info.get('duration', 60) / 1000
+            self._default_output_format = 'gif'
+            content = self._gif_handler(frames=frames, duration=duration)
+        else:
+            image = self._load_source_image()
+            image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
+            content = self._static_handler(image=image)
+
+        return content
+
 
 class BlackBackgroundRender(StickerRender):
     """黑边加底字表情包模板
@@ -518,10 +644,7 @@ class BlackBackgroundRender(StickerRender):
     _font: LocalResource = _FONT_RESOURCE('msyhbd.ttc')
     _need_external_img: bool = True
 
-    def _handler(self) -> bytes:
-        image = self._load_source_image()
-        image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
-
+    def _static_handler(self, image: Image) -> bytes:
         font_size = image.width // 8
         font = ImageFont.truetype(self._font.resolve_path, font_size)
         text_w, text_h = font.getsize_multiline(self.text)
@@ -544,6 +667,35 @@ class BlackBackgroundRender(StickerRender):
         content = self._get_pil_image(image=background)
         return content
 
+    def _gif_handler(self, frames: list[Image], duration: float) -> bytes:
+        content = self._generate_gif_from_bytes_seq(
+            frames=(self._static_handler(image=image) for image in frames),
+            duration=duration
+        )
+        return content
+
+    def _handler(self) -> bytes:
+        fm, info = self._get_source_image_info()
+        if fm == 'GIF':
+            frames = []
+            frame_index = 0
+            while True:
+                try:
+                    image = self._load_source_image(frame=frame_index)
+                    frames.append(image)
+                    frame_index += 1
+                except EOFError:
+                    break
+            duration = info.get('duration', 60) / 1000
+            self._default_output_format = 'gif'
+            content = self._gif_handler(frames=frames, duration=duration)
+        else:
+            image = self._load_source_image()
+            image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
+            content = self._static_handler(image=image)
+
+        return content
+
 
 class DeColorizeRender(StickerRender):
     """去色表情包模板
@@ -555,12 +707,39 @@ class DeColorizeRender(StickerRender):
     _need_text: bool = False
     _need_external_img: bool = True
 
-    def _handler(self) -> bytes:
-        image = self._load_source_image()
+    def _static_handler(self, image: Image) -> bytes:
         image = image.convert('RGB')
         enhancer = ImageEnhance.Color(image)
         made_image = enhancer.enhance(0)
         content = self._get_pil_image(image=made_image)
+        return content
+
+    def _gif_handler(self, frames: list[Image], duration: float) -> bytes:
+        content = self._generate_gif_from_bytes_seq(
+            frames=(self._static_handler(image=image) for image in frames),
+            duration=duration
+        )
+        return content
+
+    def _handler(self) -> bytes:
+        fm, info = self._get_source_image_info()
+        if fm == 'GIF':
+            frames = []
+            frame_index = 0
+            while True:
+                try:
+                    image = self._load_source_image(frame=frame_index)
+                    frames.append(image)
+                    frame_index += 1
+                except EOFError:
+                    break
+            duration = info.get('duration', 60) / 1000
+            self._default_output_format = 'gif'
+            content = self._gif_handler(frames=frames, duration=duration)
+        else:
+            image = self._load_source_image()
+            content = self._static_handler(image=image)
+
         return content
 
 
@@ -576,10 +755,8 @@ class GunjoRender(StickerRender):
     _default_output_width = 512
     _font: LocalResource = _FONT_RESOURCE('SourceHanSansSC-Bold.otf')
 
-    def _handler(self) -> bytes:
-        image = self._load_source_image()
+    def _static_handler(self, image: Image) -> bytes:
         image = image.convert('RGBA')
-        image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
 
         # 图片去色
         made_image = ImageEnhance.Color(image).enhance(0)
@@ -612,6 +789,35 @@ class GunjoRender(StickerRender):
         content = self._get_pil_image(image=background)
         return content
 
+    def _gif_handler(self, frames: list[Image], duration: float) -> bytes:
+        content = self._generate_gif_from_bytes_seq(
+            frames=(self._static_handler(image=image) for image in frames),
+            duration=duration
+        )
+        return content
+
+    def _handler(self) -> bytes:
+        fm, info = self._get_source_image_info()
+        if fm == 'GIF':
+            frames = []
+            frame_index = 0
+            while True:
+                try:
+                    image = self._load_source_image(frame=frame_index)
+                    frames.append(image)
+                    frame_index += 1
+                except EOFError:
+                    break
+            duration = info.get('duration', 60) / 1000
+            self._default_output_format = 'gif'
+            content = self._gif_handler(frames=frames, duration=duration)
+        else:
+            image = self._load_source_image()
+            image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
+            content = self._static_handler(image=image)
+
+        return content
+
 
 class MarriageRender(StickerRender):
     """结婚登记表情包模板
@@ -625,15 +831,54 @@ class MarriageRender(StickerRender):
     _need_external_img: bool = True
     _default_output_width = 1080
 
-    def _handler(self) -> bytes:
-        image = self._load_source_image()
-        image = self._resize_with_filling(image=image, size=(self._default_output_width, self._default_output_width))
+    def _static_handler(self, image: Image, *, resize_width: int | None = None) -> bytes:
         upper_image = self._load_extra_source_image(source_file=self._static_resource)
 
         background = Image.new(mode='RGBA', size=image.size, color=(255, 255, 255, 255))
         background.paste(im=image, box=(0, 0), mask=image)
         background.paste(im=upper_image, box=(0, 0), mask=upper_image)
+
+        if resize_width:
+            background = self._zoom_pil_image_width(image=background, width=resize_width)
         content = self._get_pil_image(image=background)
+        return content
+
+    def _gif_handler(self, frames: list[Image], duration: float, output_width: int) -> bytes:
+        content = self._generate_gif_from_bytes_seq(
+            frames=(self._static_handler(image=image, resize_width=output_width) for image in frames),
+            duration=duration
+        )
+        return content
+
+    def _handler(self) -> bytes:
+        fm, info = self._get_source_image_info()
+        if fm == 'GIF':
+            frames = []
+            frame_index = 0
+            output_width = 360
+            while True:
+                try:
+                    image = self._load_source_image(frame=frame_index)
+                    output_width = image.width
+                    image = self._resize_with_filling(
+                        image=image,
+                        size=(self._default_output_width, self._default_output_width)
+                    )
+                    frames.append(image)
+                    frame_index += 1
+                except EOFError:
+                    break
+            duration = info.get('duration', 60) / 1000
+            self._default_output_format = 'gif'
+            content = self._gif_handler(frames=frames, duration=duration, output_width=output_width)
+        else:
+            image = self._load_source_image()
+            image = self._resize_with_filling(
+                image=image,
+                size=(self._default_output_width, self._default_output_width)
+            )
+            content = self._static_handler(image=image)
+
         return content
 
 
@@ -648,12 +893,10 @@ class GrassJaRender(StickerRender):
     _font: LocalResource = _FONT_RESOURCE('fzzxhk.ttf')
     _need_external_img: bool = True
 
-    def _handler(self) -> bytes:
-        image = self._load_source_image()
+    def _static_handler(self, image: Image) -> bytes:
         image = image.convert('RGB')
         enhancer = ImageEnhance.Color(image)
         image = enhancer.enhance(0)
-        image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
 
         # 分割文本
         font_zh = ImageFont.truetype(self._font.resolve_path, int(image.width / 13))
@@ -684,6 +927,35 @@ class GrassJaRender(StickerRender):
         content = self._get_pil_image(image=background)
         return content
 
+    def _gif_handler(self, frames: list[Image], duration: float) -> bytes:
+        content = self._generate_gif_from_bytes_seq(
+            frames=(self._static_handler(image=image) for image in frames),
+            duration=duration
+        )
+        return content
+
+    def _handler(self) -> bytes:
+        fm, info = self._get_source_image_info()
+        if fm == 'GIF':
+            frames = []
+            frame_index = 0
+            while True:
+                try:
+                    image = self._load_source_image(frame=frame_index)
+                    frames.append(image)
+                    frame_index += 1
+                except EOFError:
+                    break
+            duration = info.get('duration', 60) / 1000
+            self._default_output_format = 'gif'
+            content = self._gif_handler(frames=frames, duration=duration)
+        else:
+            image = self._load_source_image()
+            image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
+            content = self._static_handler(image=image)
+
+        return content
+
     async def _translate_preprocessor(self) -> None:
         text_zh = self.text.replace('\n', ' ')
         text_trans_result = await TencentTMT().translate(source_text=self.text, target='ja')
@@ -712,6 +984,12 @@ class PetPetRender(StickerRender):
     _need_external_img: bool = True
     _default_output_format: str = 'gif'
 
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
     def _handler(self) -> bytes:
         resize_paste_loc: list[tuple[tuple[int, int], tuple[int, int]]] = [
             ((95, 95), (12, 15)),
@@ -729,12 +1007,9 @@ class PetPetRender(StickerRender):
             background.paste(frame, (0, 0), mask=frame)
             with BytesIO() as f_bf:
                 background.save(f_bf, format='PNG')
-                img_bytes = f_bf.getvalue()
-                frames_list.append(imageio.v2.imread(img_bytes))
+                frames_list.append(f_bf.getvalue())
 
-        with BytesIO() as bf:
-            imageio.mimsave(bf, frames_list, 'GIF', duration=0.06)
-            content = bf.getvalue()
+        content = self._generate_gif_from_bytes_seq(frames=frames_list, duration=0.06)
 
         return content
 
@@ -771,6 +1046,12 @@ class WorshipRender(StickerRender):
         res = numpy.dot(numpy.linalg.inv(target_matrix.T * target_matrix) * target_matrix.T, source_array)
         return numpy.array(res).reshape(8)
 
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
     def _handler(self) -> bytes:
         image = self._load_source_image()
         width, height = image.size
@@ -789,12 +1070,9 @@ class WorshipRender(StickerRender):
             background.paste(im=frame, box=(0, 0), mask=frame)
             with BytesIO() as f_bf:
                 background.save(f_bf, format='PNG')
-                img_bytes = f_bf.getvalue()
-                frames_list.append(imageio.v2.imread(img_bytes))
+                frames_list.append(f_bf.getvalue())
 
-        with BytesIO() as bf:
-            imageio.mimsave(bf, frames_list, 'GIF', duration=0.04)
-            content = bf.getvalue()
+        content = self._generate_gif_from_bytes_seq(frames=frames_list, duration=0.04)
 
         return content
 
@@ -811,6 +1089,12 @@ class TwistRender(StickerRender):
     _need_external_img: bool = True
     _default_output_format: str = 'gif'
 
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
     def _handler(self) -> bytes:
         image = self._load_source_image()
         image = self._resize_with_filling(image=image, size=(128, 128))
@@ -825,20 +1109,17 @@ class TwistRender(StickerRender):
             background = Image.new(mode='RGBA', size=(256, 256), color=(255, 255, 255, 255))
             frame = Image.open(self._static_resource(f'template_p{frame_index}.png').resolve_path)
 
-            frame_image = image.rotate(angle=angle, center=(64, 64), expand=False, resample=Image.BICUBIC, fillcolor=(255, 255, 255))
+            frame_image = image.rotate(angle=angle, center=(64, 64), expand=False,
+                                       resample=Image.BICUBIC, fillcolor=(255, 255, 255))
 
             background.paste(im=frame_image, box=paste_coordinate[frame_index], mask=frame_image)
             background.paste(im=frame, box=(0, 0), mask=frame)
             with BytesIO() as f_bf:
                 background.save(f_bf, format='PNG')
-                img_bytes = f_bf.getvalue()
-                frames_list.append(imageio.v2.imread(img_bytes))
-
+                frames_list.append(f_bf.getvalue())
             angle += 36
 
-        with BytesIO() as bf:
-            imageio.mimsave(bf, frames_list, 'GIF', duration=0.03)
-            content = bf.getvalue()
+        content = self._generate_gif_from_bytes_seq(frames=frames_list, duration=0.03)
 
         return content
 
@@ -855,6 +1136,12 @@ class WangjingzeRender(StickerRender):
     _need_text: bool = True
     _need_external_img: bool = False
     _default_output_format: str = 'gif'
+
+    def _gif_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
+
+    def _static_handler(self, *args, **kwargs) -> bytes:
+        raise NotImplementedError
 
     def _handler(self) -> bytes:
         # 分割文本
@@ -889,60 +1176,12 @@ class WangjingzeRender(StickerRender):
                     stroke_width=2, stroke_fill=(0, 0, 0)
                 )
 
-            with BytesIO() as bf0:
-                frame.save(bf0, format='JPEG')
-                img_bytes = bf0.getvalue()
-                frames_list.append(imageio.v2.imread(img_bytes))
+            with BytesIO() as bf:
+                frame.save(bf, format='JPEG')
+                frames_list.append(bf.getvalue())
 
-        with BytesIO() as bf:
-            imageio.mimsave(bf, frames_list, 'GIF', duration=0.13)
-            content = bf.getvalue()
+        content = self._generate_gif_from_bytes_seq(frames=frames_list, duration=0.13)
 
-        return content
-
-
-class LaPlumaRender(StickerRender):
-    """羽毛笔表情包模板
-
-    参数:
-        - text: 生成表情包的文字内容
-    """
-    _sticker_name: str = 'lapluma'
-    _static_resource: LocalResource = _STATIC_RESOURCE('lapluma', 'default_bg.png')
-    _font: LocalResource = _FONT_RESOURCE('SourceHanSansSC-Regular.otf')
-
-    def _handler(self) -> bytes:
-        self.source_image = self._static_resource
-        image = self._load_source_image()
-        image = self._zoom_pil_image_width(image=image, width=self._default_output_width)
-
-        # 处理文本主体
-        font_size = image.width // 25
-        text_stroke_width = int(font_size / 20)
-        font = ImageFont.truetype(self._font.resolve_path, font_size)
-        text_width_limit = int(image.width * 0.2)
-
-        # 分割文本
-        text_ = TextUtils(text=self.text).split_multiline(width=text_width_limit, font=font, stroke_width=text_stroke_width).text
-
-        # 创建背景图层
-        background = Image.new(
-            mode='RGB',
-            size=(image.width, image.height),
-            color=(32, 32, 32))
-
-        # 先把羽毛笔图贴上去
-        background.paste(image, box=(0, 0))
-
-        # 再贴主体文本
-        ImageDraw.Draw(background).multiline_text(
-            xy=(int(image.width * 0.85), int(image.height * 0.60)),
-            text=text_, font=font, align='left', anchor='ma',
-            fill=(255, 255, 255),
-            stroke_width=text_stroke_width,
-            stroke_fill=(0, 0, 0))
-
-        content = self._get_pil_image(image=background)
         return content
 
 
@@ -966,8 +1205,7 @@ _ALL_Render: dict[str, Type[StickerRender]] = {
     'petpet': PetPetRender,
     '膜拜': WorshipRender,
     '搓': TwistRender,
-    '王境泽': WangjingzeRender,
-    "羽毛笔": LaPlumaRender
+    '王境泽': WangjingzeRender
 }
 
 

@@ -15,10 +15,9 @@ menu = on_command(
     block=True,
 )
 
-api = "https://0sf-database.vercel.app/support"
+api = "https://luoyu7-database.vercel.app/support"
 api_support = api + "/main.json"
-docs = "https://0sf.yokinanya.icu"
-docs_mirror = "https://mirrors.0sf.yokinanya.icu/"
+docs = "https://luoyu7.yokinanya.icu/LingStarYu/intro/"
 
 
 @menu.handle()
@@ -32,5 +31,5 @@ async def menu(bot: Bot, event: MessageEvent, matcher: Matcher, state: T_State):
         announcement = response.json()["announcement"]
         docs_text = f"{tittle}\n{announcement}{raw}\n当前版本：{version}"
     except:
-        docs_text = f"※ 铃星羽 ※\n\n帮助文档：\n{docs}\n镜像地址：\n{docs_mirror}\n当前版本：无法获取"
+        docs_text = f"※ 洛羽柒·铃星羽 ※\n\n帮助文档：\n{docs}\n当前版本：无法获取"
     await bot.send(event=event, message=docs_text)

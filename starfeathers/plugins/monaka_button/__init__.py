@@ -1,23 +1,24 @@
-from nonebot import on_regex, on_command, logger
-from nonebot.params import CommandArg, ArgStr, EventMessage
+from nonebot import on_regex, on_command
+from nonebot.params import EventMessage
 from nonebot.adapters.onebot.v11 import Bot
 from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.adapters.onebot.v11.permission import GROUP, PRIVATE_FRIEND
 from nonebot.adapters.onebot.v11.message import Message, MessageSegment
 from nonebot.matcher import Matcher
-from nonebot.typing import T_State
 import httpx
 import random
 import os
 
-mnkbutton = "https://jsd.cdn.zzko.cn/gh/yokinanya/monaka-button@master/setting/translate/01_voices.json"
+mnkbutton = "https://github.com/yokinanya/monaka-button/raw/master/setting/translate/01_voices.json"
+mnkbutton_hk = "https://raw.iqiq.io/yokinanya/monaka-button/master/setting/translate/01_voices.json"
+mnkbutton_cn = "https://jsd.cdn.zzko.cn/gh/yokinanya/monaka-button@master/setting/translate/01_voices.json"
 voice_header = "https://monaka-button.yokinanya.icu/voices"
 local_resource = os.path.abspath("./omega_miya/local_resource/audio/button_voice/mnk_voice/")
 
 
 def get_voice():
     with httpx.Client() as client:
-        response = client.get(url=mnkbutton)
+        response = client.get(url=mnkbutton_hk)
     voice_json = response.json()
     voice_list = []
     voice_list_m = []

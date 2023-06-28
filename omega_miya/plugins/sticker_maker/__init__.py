@@ -1,4 +1,15 @@
-from nonebot import on_command, logger
+"""
+@Author         : Ailitonia
+@Date           : 2022/04/28 20:26
+@FileName       : sticker_maker.py
+@Project        : nonebot2_miya
+@Description    : 表情包插件
+@GitHub         : https://github.com/Ailitonia
+@Software       : PyCharm
+"""
+
+from nonebot.log import logger
+from nonebot.plugin import on_command, PluginMetadata
 from nonebot.typing import T_State
 from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -17,12 +28,13 @@ from omega_miya.utils.qq_tools import get_user_head_img_url
 from .render import get_render, get_all_render_name, download_source_image
 
 
-# Custom plugin usage text
-__plugin_custom_name__ = '表情包'
-__plugin_usage__ = rf'''【表情包助手】
-使用模板快速制作表情包
-
-/表情包 [模板名] [表情包文本] [表情包图片]'''
+__plugin_meta__ = PluginMetadata(
+    name="表情包",
+    description="【表情包助手插件】\n"
+                "使用模板快速制作表情包",
+    usage="/表情包 [模板名] [表情包文本] [表情包图片]",
+    extra={"author": "Ailitonia"},
+)
 
 
 sticker = on_command(
@@ -119,7 +131,9 @@ async def handle_sticker(
     render_names = get_all_render_name()
     render_name_text = '\n'.join(x for x in render_names)
     if render_name not in render_names:
-        await matcher.reject_arg('render_name', f'“{render_name}”不是可用的表情包模板, 请在以下模板中选择并重新输入:\n\n{render_name_text}', at_sender=True)
+        await matcher.reject_arg('render_name',
+                                 f'“{render_name}”不是可用的表情包模板, 请在以下模板中选择并重新输入:\n\n{render_name_text}',
+                                 at_sender=True)
 
     # 获取表情包模板并检查是否需要文字或图片作为素材
     sticker_render = get_render(render_name)
@@ -141,4 +155,4 @@ async def handle_sticker(
         logger.error(f'StickerMaker | 制作表情包失败, {sticker_result}')
         await matcher.finish('表情包制作失败了QAQ, 发生了意外的错误, 请稍后再试', at_sender=True)
     else:
-        await matcher.finish(MessageSegment.image(sticker_result.file_uri), at_sender=False)
+        await matcher.finish(MessageSegment.image(sticker_result.file_uri), at_sender=True)

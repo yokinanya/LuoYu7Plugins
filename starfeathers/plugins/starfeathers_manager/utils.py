@@ -5,24 +5,16 @@
 # @Email   :  youzyyz1384@qq.com
 # @File    : utils.py
 # @Software: PyCharm
-import asyncio
-import base64
-import datetime
 import json
-import os
 import random
-import re
-from typing import Union, Optional
+from typing import Optional, Union
 
-import httpx
 import nonebot
 from nonebot import logger
-from nonebot.adapters import Message
-from nonebot.adapters.onebot.v11 import GroupMessageEvent, ActionFailed, Bot
+from nonebot.adapters.onebot.v11 import ActionFailed, Bot
 from nonebot.matcher import Matcher
 
-from .config import plugin_config, global_config
-from .path import *
+from .config import global_config, plugin_config
 
 su = global_config.superusers
 cb_notice = plugin_config.callback_notice
@@ -139,3 +131,13 @@ async def fi(cmd: Matcher, msg) -> None:
 async def log_fi(cmd: Matcher, msg, log: str = None, err=False) -> None:
     (logger.error if err else logger.info)(log if log else msg)
     await fi(cmd, msg)
+
+
+def err_info(e: ActionFailed) -> str:
+    e1 = 'Failed: '
+    if e2 := e.info.get('wording'):
+        return e1 + e2
+    elif e2 := e.info.get('msg'):
+        return e1 + e2
+    else:
+        return repr(e)

@@ -1,13 +1,15 @@
-import nonebot
-from nonebot import logger, on_command, on_request, on_regex
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, ActionFailed, GroupRequestEvent
+from nonebot import get_driver, logger, on_command, on_request
+from nonebot.adapters.onebot.v11 import (ActionFailed, Bot, GroupMessageEvent,
+                                         GroupRequestEvent, Message, unescape)
 from nonebot.adapters.onebot.v11.permission import GROUP_ADMIN, GROUP_OWNER
-from nonebot.permission import SUPERUSER
 from nonebot.matcher import Matcher
+from nonebot.params import CommandArg
+from nonebot.permission import SUPERUSER
 from nonebot.typing import T_State
-from .utils import At, MsgText, banSb, change_s_title, fi, log_fi, sd
 
-su = nonebot.get_driver().config.superusers
+from .utils import At, MsgText, banSb, change_s_title, err_info, fi, log_fi, sd
+
+su = get_driver().config.superusers
 
 
 ban = on_command("ban", aliases={"禁言"}, priority=1, block=True, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
@@ -131,9 +133,9 @@ async def _(bot: Bot, matcher: Matcher, event: GroupMessageEvent):
 
 
 group_apply = on_request()
-agree_apply = on_regex(pattern=r'^同意$', priority=1, block=True, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
-disagree_apply = on_regex(pattern=r'^拒绝(：|:|,|，|.)?', priority=1, block=True, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
-enable_group = [1128216585, 466432629, 1067555292]
+agree_apply = on_command('同意', priority=30, block=True, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
+disagree_apply = on_command('拒绝', priority=30, block=True, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
+enable_group = [1128216585, 466432629, 1067555292, 553717146]
 
 
 # 入群申请消息
@@ -147,34 +149,43 @@ async def apply_msg(bot: Bot, event: GroupRequestEvent, state: T_State):
         flag_id = event.flag  # 申请进群的flag
         global type_id
         type_id = event.sub_type  # 请求信息的类型
-        await group_apply.finish(message=f'收到进群申请\nQQ:{apply_id}\n验证消息:{message}\n【同意/拒绝】')
+        await group_apply.finish(message=f'收到进群申请\nQQ:{apply_id}\nFlag：{flag_id}\n验证消息:{message}\n#【同意/拒绝】')
     else:
         logger.info(f'群{event.group_id}收到进群申请，但未启用Bot处理')
 
 
-# 同意申请入群
-@agree_apply.handle()
-async def agree(bot: Bot, event: GroupMessageEvent, state: T_State):
+async def group(bot: Bot, approve: bool, arg: Message = CommandArg()) -> str:
+    args = arg.extract_plain_text().strip().split(maxsplit=1)
     try:
-        await bot.set_group_add_request(flag=flag_id, sub_type=type_id, approve=True)
-        await agree_apply.finish(message=f'{apply_id}的入群申请已处理')
-    except ActionFailed:
-        await agree_apply.finish("权限不足，或已处理")
+        flag = flag_id
+    except:
+        return("事件已走丢, 请尝试手动处理.")
+    reason = unescape(args[0]) if len(args) > 2 else ''
+    if len(bytes(reason, encoding='utf-8')) > 75:
+        return '理由太长啦!'
+
+    try:
+        await bot.set_group_add_request(
+            flag=flag, sub_type=type_id, approve=approve, reason=reason)
+    except ActionFailed as e:
+        logger.error(f'处理群聊请求失败({flag}): {err_info(e)}')
+        return f'{err_info(e)}\nflag: {flag}'
+    except Exception as e:
+        return repr(e)
+
+    ap = '同意' if approve else '拒绝'
+    mode = '入群' if type_id == 'add' else '拉群'
+    return f'已{ap}用户{apply_id}{mode}.'
+
+
+@agree_apply.handle()
+async def agree(bot: Bot, event: GroupMessageEvent, state: T_State, args: Message = CommandArg()):
+    msg = await group(bot, True, args)
+    await agree_apply.finish(msg)
 
 
 # 拒绝入群
 @disagree_apply.handle()
-async def sn(bot: Bot, event: GroupMessageEvent, state: T_State):
-    raw_msg = event.raw_message
-    reason='机器人自动审批，如有误判请联系群主或其他管理员'
-    split_word = [":", ",", "：", "，", "."]
-    for word in split_word:
-        if word in raw_msg:
-            raw_msg = raw_msg.replace(word, ":")
-            break
-    if raw_msg.find(":") != -1:
-        reason = raw_msg.split(":")[-1]
-    else:
-        reason = reason
-    await bot.set_group_add_request(flag=flag_id, sub_type=type_id, approve=False, reason=reason)
-    await agree_apply.finish(message=f'{apply_id}的入群申请已处理')
+async def sn(bot: Bot, event: GroupMessageEvent, state: T_State, args: Message = CommandArg()):
+    msg = await group(bot, False, args)
+    await agree_apply.finish(msg)
