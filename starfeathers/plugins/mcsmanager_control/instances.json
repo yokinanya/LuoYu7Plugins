@@ -1,0 +1,22 @@
+{
+  "生存服": {
+    "gid": "722557e58cb04b8483c9617f605fd68f",
+    "uid": "1898b4a3753b4c7e924be2e5dc370bcb"
+  },
+  "镜像服":{
+    "gid": "722557e58cb04b8483c9617f605fd68f",
+    "uid": "7ebb367dfa0341199e3873914862c7ac"
+  },
+  "创造服":{
+    "gid": "722557e58cb04b8483c9617f605fd68f",
+    "uid": "3d9d962cd0cc449e8fe66cc7254c57f5"
+  },
+  "Velocity":{
+    "gid": "722557e58cb04b8483c9617f605fd68f",
+    "uid": "2fa3fcf5d55341f39bf581eeccede56a"
+  },
+  "Geyser":{
+    "gid": "722557e58cb04b8483c9617f605fd68f",
+    "uid": "dc1c8d9b23cb4849bde7dc28141aefd4"
+  }
+}

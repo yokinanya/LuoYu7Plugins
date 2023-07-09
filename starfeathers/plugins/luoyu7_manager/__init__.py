@@ -1,16 +1,18 @@
-from nonebot import get_driver, logger, on_command, on_request
-from nonebot.adapters.onebot.v11 import (ActionFailed, Bot, GroupMessageEvent,
-                                         GroupRequestEvent, Message, unescape)
+import requests
+from nonebot import get_driver, logger, on_command, on_request,on_notice
+from nonebot.adapters.onebot.v11 import ActionFailed, Bot, GroupMessageEvent,GroupRequestEvent, Message, unescape
+from nonebot.adapters.onebot.v11.event import GroupMessageEvent, GroupIncreaseNoticeEvent
 from nonebot.adapters.onebot.v11.permission import GROUP_ADMIN, GROUP_OWNER
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
+from nonebot.params import CommandArg,ArgStr
 from nonebot.permission import SUPERUSER
 from nonebot.typing import T_State
 
 from .utils import At, MsgText, banSb, change_s_title, err_info, fi, log_fi, sd
+from .config import global_config, plugin_config
 
 su = get_driver().config.superusers
-
+checkban_enabled = plugin_config.checkban_enable
 
 ban = on_command("ban", aliases={"禁言"}, priority=1, block=True, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
 
@@ -132,60 +134,58 @@ async def _(bot: Bot, matcher: Matcher, event: GroupMessageEvent):
         await fi(matcher, '不能含有@全体成员')
 
 
-group_apply = on_request()
-agree_apply = on_command('同意', priority=30, block=True, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
-disagree_apply = on_command('拒绝', priority=30, block=True, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
-enable_group = [1128216585, 466432629, 1067555292, 553717146]
+
+check_isban = on_notice(priority=90, block=False)
+
+checkban_enable = [1067555292, 1030902782, 1128216585, 553717146]
 
 
-# 入群申请消息
-@group_apply.handle()
-async def apply_msg(bot: Bot, event: GroupRequestEvent, state: T_State):
-    if event.group_id in enable_group:
-        global apply_id
-        apply_id = event.user_id
-        message = event.comment  # 获取验证信息
-        global flag_id
-        flag_id = event.flag  # 申请进群的flag
-        global type_id
-        type_id = event.sub_type  # 请求信息的类型
-        await group_apply.finish(message=f'收到进群申请\nQQ:{apply_id}\nFlag：{flag_id}\n验证消息:{message}\n#【同意/拒绝】')
-    else:
-        logger.info(f'群{event.group_id}收到进群申请，但未启用Bot处理')
+@check_isban.handle()
+async def handle_group_increase(bot: Bot, matcher: Matcher, event: GroupIncreaseNoticeEvent):
+    user_id = event.user_id
+    group_id = event.group_id
+    api = "https://api.yokinanya.icu/qqban/"
+    if group_id in checkban_enable:
+        url = api + user_id
+        result = await requests.get(url).json()
+        if result["status"] == 200:
+            reason = result["reason"]
+            type = result["type"]
+            msg = f"新成员 {user_id} 处于黑名单中\n拉黑理由：{reason}\n标签：{type}"
+            await check_isban.finish(msg)
+        elif result["status"] == 404:
+            pass
 
 
-async def group(bot: Bot, approve: bool, arg: Message = CommandArg()) -> str:
-    args = arg.extract_plain_text().strip().split(maxsplit=1)
-    try:
-        flag = flag_id
-    except:
-        return("事件已走丢, 请尝试手动处理.")
-    reason = unescape(args[0]) if len(args) > 2 else ''
-    if len(bytes(reason, encoding='utf-8')) > 75:
-        return '理由太长啦!'
+check_isban_c = on_command(
+    "checkisban",
+    aliases={"云黑查询"},
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    priority=10,
+    block=False,
+)
 
-    try:
-        await bot.set_group_add_request(
-            flag=flag, sub_type=type_id, approve=approve, reason=reason)
-    except ActionFailed as e:
-        logger.error(f'处理群聊请求失败({flag}): {err_info(e)}')
-        return f'{err_info(e)}\nflag: {flag}'
-    except Exception as e:
-        return repr(e)
-
-    ap = '同意' if approve else '拒绝'
-    mode = '入群' if type_id == 'add' else '拉群'
-    return f'已{ap}用户{apply_id}{mode}.'
+@check_isban_c.handle()
+async def handle_first_receive(state: T_State, event: GroupMessageEvent, matcher: Matcher, args: Message = CommandArg()):
+    plain_text = args.extract_plain_text().strip()
+    if plain_text:
+        state.update({'qqid': plain_text})
 
 
-@agree_apply.handle()
-async def agree(bot: Bot, event: GroupMessageEvent, state: T_State, args: Message = CommandArg()):
-    msg = await group(bot, True, args)
-    await agree_apply.finish(msg)
-
-
-# 拒绝入群
-@disagree_apply.handle()
-async def sn(bot: Bot, event: GroupMessageEvent, state: T_State, args: Message = CommandArg()):
-    msg = await group(bot, False, args)
-    await agree_apply.finish(msg)
+@check_isban_c.got("qqid", prompt="请输入你要查询的QQ号")
+async def handle_check(bot: Bot, event: GroupMessageEvent, qqid: str = ArgStr('qqid')):
+    group_id = event.group_id
+    api = "https://api.yokinanya.icu/qqban/"
+    if qqid.isdigit() == False:
+        check_isban_c.reject("你输入的不是数字，请重新输入")
+    if group_id in checkban_enable:
+        url = api + qqid
+        result = await requests.get(url).json()
+        if result["status"] == 200:
+            reason = result["reason"]
+            type = result["type"]
+            msg = f"查询的 {qqid} 处于黑名单中\n拉黑理由：{reason}\n标签：{type}"
+            await check_isban.finish(msg)
+        elif result["status"] == 404:
+            msg = f"查询的 {qqid} 不处于黑名单中\n标签：{type}"
+            await check_isban.finish(msg)

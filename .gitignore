@@ -175,7 +175,7 @@ cython_debug/
 /starfeathers/plugins/nonebot_plugin_directlinker
 /*_voice.txt
 /*_voice.py
-/test.py
+/test*
 /*.ipynb
 starfeathers/data/
 

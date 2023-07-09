@@ -139,12 +139,10 @@ async def handle_group_decrease(bot: Bot, matcher: Matcher, event: GroupDecrease
     user_id = event.user_id
     group_id = event.group_id
     # 设置退群消息
-    msg: str = f"人生有梦，各自精彩"
-    msg0: str = f"{user_id} 退群了"
+    msg: str = f"{user_id} 退群了，人生有梦，各自精彩"
     # 判断群组是否在白名单中
     if str(group_id) in enable_group:
         # 发送退群消息
-        await bot.send(event=event, message=msg0)
         await bot.send(event=event, message=msg)
     else:
         pass
