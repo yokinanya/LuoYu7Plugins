@@ -174,7 +174,7 @@ async def handle_group_increase(
 check_isban_c = on_command(
     "checkisban",
     aliases={"云黑查询"},
-    permission=GROUP,
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=10,
     block=False,
 )

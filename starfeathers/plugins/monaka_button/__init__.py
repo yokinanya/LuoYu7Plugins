@@ -10,7 +10,6 @@ import random
 import os
 
 mnkbutton = "https://github.com/yokinanya/monaka-button/raw/master/setting/translate/01_voices.json"
-mnkbutton_hk = "https://raw.iqiq.io/yokinanya/monaka-button/master/setting/translate/01_voices.json"
 mnkbutton_cn = "https://jsd.cdn.zzko.cn/gh/yokinanya/monaka-button@master/setting/translate/01_voices.json"
 voice_header = "https://monaka-button.yokinanya.icu/voices"
 local_resource = os.path.abspath("./omega_miya/local_resource/audio/button_voice/mnk_voice/")
@@ -18,7 +17,7 @@ local_resource = os.path.abspath("./omega_miya/local_resource/audio/button_voice
 
 def get_voice():
     with httpx.Client() as client:
-        response = client.get(url=mnkbutton_hk)
+        response = client.get(url=mnkbutton_cn)
     voice_json = response.json()
     voice_list = []
     voice_list_m = []
